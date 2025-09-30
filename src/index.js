@@ -1,3 +1,4 @@
 import createTodo from './todo';
-import createProject from './project'; 
+import { addProject, addTodoToCurrent, setCurrentProject } from './logic';
+import { renderProjects, renderTodos, renderCurrentProjectName } from './dom'; 
 
