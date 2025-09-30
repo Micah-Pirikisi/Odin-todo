@@ -31,9 +31,20 @@ function renderTodos() {
     const current = getCurrentProject(); 
     if (!current) return; 
 
-    current.getTodos().forEach(todo => {
+    current.getTodos().forEach((todo, index) => {
         const li = document.createElement('li'); 
         li.textContent = `${todo.title} (Due: ${todo.dueDate})`;
+        
+        // delete button 
+        const deleteBtn = document.createElement('button'); 
+        deleteBtn.textContent = '❌'
+        deleteBtn.style.marginLeft = '10px'; 
+        deleteBtn.addEventListener('click', () => {
+            current.removeTodo(index); 
+            renderTodos(); 
+        })
+
+        li.appendChild(deleteBtn); 
         todoList.appendChild(li);  
     }); 
 }
