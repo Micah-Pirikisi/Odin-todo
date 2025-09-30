@@ -96,6 +96,15 @@ function renderTodos() {
             todoText.style.opacity = '0.6';
         }
         li.appendChild(todoText); 
+
+        // ✏️ edit button
+        const editBtn = document.createElement('button');
+        editBtn.textContent = '✏️';
+        editBtn.style.marginLeft = '10px';
+        editBtn.addEventListener('click', () => {
+            showEditForm(li, todo, index);
+        });
+        li.appendChild(editBtn);
         
         // delete button 
         const deleteBtn = document.createElement('button'); 
@@ -110,6 +119,57 @@ function renderTodos() {
         li.appendChild(deleteBtn); 
         todoList.appendChild(li);  
     }); 
+}
+
+function showEditForm(li, todo, index) {
+    // clear existing content 
+    li.innerHTML = '';
+
+    const form = document.createElement('form');
+    form.style.display = 'inline';
+
+    const titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.value = todo.title;
+
+    const dueDateInput = document.createElement('input');
+    dueDateInput.type = 'date';
+    dueDateInput.value = todo.dueDate;
+
+    const prioritySelect = document.createElement('select');
+    ['High', 'Medium', 'Low'].forEach(p => {
+    const option = document.createElement('option');
+        option.value = p;
+        option.textContent = p;
+        if (p === todo.priority) option.selected = true;
+        prioritySelect.appendChild(option);
+    });
+
+    const saveBtn = document.createElement('button');
+    saveBtn.textContent = 'Save';
+    saveBtn.type = 'submit';
+
+    form.appendChild(titleInput);
+    form.appendChild(dueDateInput);
+    form.appendChild(prioritySelect);
+    form.appendChild(saveBtn);
+    li.appendChild(form);
+
+    form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // update todo
+    if (todo.edit) {
+        todo.edit(titleInput.value, todo.description, dueDateInput.value, prioritySelect.value);
+    } else {
+        todo.title = titleInput.value;
+        todo.dueDate = dueDateInput.value;
+        todo.priority = prioritySelect.value;
+    }
+
+    saveToLocalStorage();
+    renderTodos();
+    });
 }
 
 export { renderProjects, renderTodos, renderCurrentProjectName }; 
