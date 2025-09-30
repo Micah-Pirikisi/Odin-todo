@@ -8,21 +8,26 @@ import { renderProjects,
     renderCurrentProjectName 
 } from './dom'; 
 
-// Setup initial data
-addProject("Coding");
-addProject("Wellness");
+// handle project form submission 
+document.getElementById('project-form').addEventListener('submit', (e) => {
+    e.preventDefault(); 
 
-setCurrentProject("Coding");
-addTodoToCurrent(createTodo("Finish DOM module", "Almost there!", "2025-10-03", "high"));
+    const nameInput = document.getElementById('project-name'); 
+    const name = nameInput.value.trim(); 
 
-setCurrentProject("Wellness");
-addTodoToCurrent(createTodo("Stretch again", "You've been sitting too long", "2025-10-04", "low"));
+    if (name === '') return; 
 
-renderProjects();
-renderCurrentProjectName();
-renderTodos();
+    addProject(name); 
+    setCurrentProject(name); 
 
-// 🧩 Handle Form Submission
+    renderProjects(); 
+    renderCurrentProjectName(); 
+    renderTodos(); 
+
+    nameInput.value = ''; 
+})
+
+// handle todo form submission
 document.getElementById("todo-form").addEventListener("submit", (e) => {
     e.preventDefault();
 

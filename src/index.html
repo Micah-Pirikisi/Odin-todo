@@ -9,12 +9,17 @@
     <div id="app">
         <div id="sidebar">
             <h2>Projects</h2>
-            <div id="project-list"></div>
+            <ul id="project-list"></ul>
+            <h3>Add New Project</h3>
+            <form id="project-form">
+                <input type="text" id="project-name" placeholder="Project name" required>
+                <button type="submit">Add Project</button>
+            </form>
         </div>
 
         <div id="main">
             <div id="project-title"></div>
-            <div id="todo-list"></div>
+            <ul id="todo-list"></ul>
             <h3>Add a New Todo</h3>
             <form id="todo-form">
                 <input type="text" id="todo-title" placeholder="Title" required />
