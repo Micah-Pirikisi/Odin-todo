@@ -8,6 +8,15 @@ import { renderProjects,
     renderCurrentProjectName 
 } from './dom'; 
 
+import { loadFromLocalStorage, 
+    saveToLocalStorage
+} from './storage';
+
+loadFromLocalStorage();
+renderProjects();
+renderCurrentProjectName();
+renderTodos();
+
 // handle project form submission 
 document.getElementById('project-form').addEventListener('submit', (e) => {
     e.preventDefault(); 
@@ -22,6 +31,7 @@ document.getElementById('project-form').addEventListener('submit', (e) => {
 
     renderProjects(); 
     renderCurrentProjectName(); 
+    saveToLocalStorage()
     renderTodos(); 
 
     nameInput.value = ''; 
@@ -42,6 +52,7 @@ document.getElementById("todo-form").addEventListener("submit", (e) => {
     addTodoToCurrent(newTodo);
 
     // Re-render
+    saveToLocalStorage()
     renderTodos();
 
     // Reset form

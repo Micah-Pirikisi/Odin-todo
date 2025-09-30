@@ -31,6 +31,7 @@ function renderProjects() {
             removeProject(project.name);
             renderProjects();
             renderCurrentProjectName();
+            saveToLocalStorage()
             renderTodos();
         });
 
@@ -63,6 +64,7 @@ function renderTodos() {
         deleteBtn.style.marginLeft = '10px'; 
         deleteBtn.addEventListener('click', () => {
             current.removeTodo(index); 
+            saveToLocalStorage()
             renderTodos(); 
         })
 
