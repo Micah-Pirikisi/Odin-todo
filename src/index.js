@@ -12,6 +12,8 @@ import { loadFromLocalStorage,
     saveToLocalStorage
 } from './storage';
 
+import './style.css';
+
 loadFromLocalStorage();
 renderProjects();
 renderCurrentProjectName();

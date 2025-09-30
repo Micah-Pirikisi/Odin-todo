@@ -4,6 +4,12 @@ import { getProjects,
     removeProject 
 } from './logic';
 
+import { saveToLocalStorage
+} from './storage';
+
+
+// render projects 
+
 function renderProjects() {
     const projectList = document.getElementById('project-list'); 
     projectList.innerHTML = ''; 
@@ -47,6 +53,8 @@ function renderCurrentProjectName() {
     title.textContent = current ? current.name: ''; 
 }
 
+// render todos 
+
 function renderTodos() {
     const todoList = document.getElementById('todo-list'); 
     todoList.innerHTML = ''; 
@@ -54,9 +62,40 @@ function renderTodos() {
     const current = getCurrentProject(); 
     if (!current) return; 
 
-    current.getTodos().forEach((todo, index) => {
+    const todos = current.getTodos(); 
+
+    todos.forEach((todo, index) => {
         const li = document.createElement('li'); 
-        li.textContent = `${todo.title} (Due: ${todo.dueDate})`;
+
+        // checkbox 
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = todo.completed;
+        checkbox.addEventListener('change', () => {
+            todo.toggleComplete();
+            saveToLocalStorage();  // make sure to save state
+            renderTodos();         // re-render to update style
+        });
+        li.appendChild(checkbox);
+
+        // priority label 
+        const priorityTag = document.createElement('span'); 
+        priorityTag.textContent = todo.priority; 
+        priorityTag.classList.add(`todo-${todo.priority.toLowerCase()}`); 
+        priorityTag.style.marginRight = '10px'; 
+
+        li.appendChild(priorityTag); 
+
+        // todo title and due date 
+        const todoText = document.createElement('span'); 
+        todoText.textContent = `${todo.title} (Due: ${todo.dueDate})`
+
+        // todo completion 
+        if (todo.completed) {
+            todoText.style.textDecoration = 'line-through';
+            todoText.style.opacity = '0.6';
+        }
+        li.appendChild(todoText); 
         
         // delete button 
         const deleteBtn = document.createElement('button'); 

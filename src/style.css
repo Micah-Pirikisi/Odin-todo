@@ -1,0 +1,21 @@
+/* Priority styles */
+.todo-high {
+    color: white;
+    background-color: #e74c3c; 
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.todo-medium {
+    color: black;
+    background-color: #f1c40f; 
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.todo-low {
+    color: white;
+    background-color: #2ecc71; 
+    padding: 4px 8px;
+    border-radius: 4px;
+}

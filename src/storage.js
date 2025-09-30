@@ -11,7 +11,8 @@ function saveToLocalStorage() {
             title: todo.title, 
             description: todo.description, 
             dueDate: todo.dueDate, 
-            priority: todo.priority
+            priority: todo.priority, 
+            completed: todo.completed
         }))
     })); 
 
@@ -31,8 +32,12 @@ function loadFromLocalStorage() {
                     todoData.title, 
                     todoData.description, 
                     todoData.dueDate, 
-                    todoData.priority
+                    todoData.priority, 
+                    todoData.completed || false 
                 )); 
+
+                newTodo.completed = todoData.completed || false; 
+                newProject.addTodo(newTodo);
             }); 
         }); 
 
