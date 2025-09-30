@@ -1,4 +1,8 @@
-import { getProjects, getCurrentProject, setCurrentProject } from './logic';
+import { getProjects, 
+    getCurrentProject, 
+    setCurrentProject, 
+    removeProject 
+} from './logic';
 
 function renderProjects() {
     const projectList = document.getElementById('project-list'); 
@@ -6,16 +10,34 @@ function renderProjects() {
 
     getProjects().forEach(project => {
         const li = document.createElement('li'); 
-        li.textContent = project.name; 
+        
+        const projectName = document.createElement('span');
+        projectName.textContent = project.name;
+        projectName.style.cursor = 'pointer';
 
-        li.addEventListener('click', () => {
-            setCurrentProject(project.name); 
-            renderTodos(); 
-            renderCurrentProjectName(); 
-        }); 
+        // switch projects on click
+        projectName.addEventListener('click', () => {
+            setCurrentProject(project.name);
+            renderTodos();
+            renderCurrentProjectName();
+        });
 
+         // delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '❌';
+        deleteBtn.style.marginLeft = '10px';
+
+        deleteBtn.addEventListener('click', () => {
+            removeProject(project.name);
+            renderProjects();
+            renderCurrentProjectName();
+            renderTodos();
+        });
+
+        li.appendChild(projectName);
+        li.appendChild(deleteBtn);
         projectList.appendChild(li); 
-    })
+    }); 
 }
 
 function renderCurrentProjectName() {

@@ -20,6 +20,14 @@ function addProject(name) {
     return newProject; 
 }
 
+function removeProject(name) {
+    projects = projects.filter(p => p.name !== name); 
+
+    if (currentProject && currentProject.name === name) {
+        currentProject = projects.length > 0 ? projects[0] : null; 
+    }
+}
+
 function setCurrentProject(name) {
     const found = projects.find(p => p.name === name); 
     if (found) {
@@ -37,6 +45,7 @@ export {
     getProjects, 
     getCurrentProject, 
     addProject, 
+    removeProject, 
     setCurrentProject, 
     addTodoToCurrent
 }
