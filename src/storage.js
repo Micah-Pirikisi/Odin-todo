@@ -12,7 +12,9 @@ function saveToLocalStorage() {
             description: todo.description, 
             dueDate: todo.dueDate, 
             priority: todo.priority, 
-            completed: todo.completed
+            completed: todo.completed, 
+            notes: todo.notes || '',
+            checklist: todo.checklist || []
         }))
     })); 
 
@@ -31,9 +33,10 @@ function loadFromLocalStorage() {
     try {
         const parsed = JSON.parse(saved); 
         parsed.forEach(projectData => {
+            if (projectData.name === 'General') return;
             const newProject = addProject(projectData.name); 
             projectData.todos.forEach(todoData => {
-                newProject.addTodo(createTodo(
+                const newTodo = createTodo(
                     todoData.title, 
                     todoData.description, 
                     todoData.dueDate, 
@@ -41,11 +44,19 @@ function loadFromLocalStorage() {
                     todoData.notes || '', 
                     todoData.checklist || [],
                     todoData.completed || false 
-                )); 
+                ); 
 
                 newProject.addTodo(newTodo);
             }); 
         }); 
+
+        const generalProject = getProjects().find(p => p.name === 'General');
+        if (!generalProject) addProject('General');
+
+        // set current project to 'General' if none exists
+        if (!getCurrentProject()) {
+            setCurrentProject('General');
+        }
 
         if (parsed.length > 0) {
             setCurrentProject(parsed[0].name); 

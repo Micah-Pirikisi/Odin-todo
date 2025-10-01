@@ -15,7 +15,16 @@ function renderProjects() {
     const projectList = document.getElementById('project-list'); 
     projectList.innerHTML = ''; 
 
-    getProjects().forEach(project => {
+    const projects = getProjects(); 
+
+    // 'General' always first 
+    projects.sort((a, b) => {
+        if (a.name === 'General') return -1; 
+        if (b.name === 'General') return 1; 
+        return a.name.localeCompare(b.name); 
+    }); 
+
+    projects.forEach(project => {
         const li = document.createElement('li'); 
         
         const projectName = document.createElement('span');
@@ -30,20 +39,22 @@ function renderProjects() {
         });
 
          // delete button
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = '❌';
-        deleteBtn.style.marginLeft = '10px';
+        if (project.name !== 'General') {
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '❌';
+            deleteBtn.style.marginLeft = '10px';
 
-        deleteBtn.addEventListener('click', () => {
-            removeProject(project.name);
-            renderProjects();
-            renderCurrentProjectName();
-            saveToLocalStorage()
-            renderTodos();
-        });
+            deleteBtn.addEventListener('click', () => {
+                removeProject(project.name);
+                renderProjects();
+                renderCurrentProjectName();
+                saveToLocalStorage()
+                renderTodos();
+            });
+            li.appendChild(deleteBtn);
+        }
 
         li.appendChild(projectName);
-        li.appendChild(deleteBtn);
         projectList.appendChild(li); 
     }); 
 }
@@ -63,7 +74,15 @@ function renderTodos() {
     const current = getCurrentProject(); 
     if (!current) return; 
 
-    const todos = current.getTodos(); 
+    let todos = []; 
+
+    if (current.name === 'General') {
+        // show all todos from all projects 
+        todos = getProjects()
+            .flatMap(p => p.getTodos()); 
+    } else {
+        todos = current.getTodos(); 
+    }
 
     todos.forEach((todo, index) => {
         const li = document.createElement('li'); 
@@ -112,7 +131,20 @@ function renderTodos() {
         deleteBtn.textContent = '❌'
         deleteBtn.style.marginLeft = '10px'; 
         deleteBtn.addEventListener('click', () => {
-            current.removeTodo(index); 
+            if (current.name === 'General') {
+                const allProjects = getProjects(); 
+                const realProject = allProjects
+                    .find(p => p.getTodos()
+                    .includes(todos[index])); 
+                if (realProject) {
+                    realProject.removeTodo(realProject
+                        .getTodos()
+                    .indexOf(todos[index])); 
+                }
+            } else {
+                current.removeTodo(index); 
+            }
+             
             saveToLocalStorage()
             renderTodos(); 
         })

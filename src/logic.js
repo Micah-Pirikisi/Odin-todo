@@ -41,6 +41,12 @@ function addTodoToCurrent(todo) {
     }
 }
 
+// initialize general project
+const GENERAL_PROJECT_NAME = 'General';
+
+const generalProject = addProject(GENERAL_PROJECT_NAME);
+setCurrentProject(GENERAL_PROJECT_NAME);
+
 export {
     getProjects, 
     getCurrentProject, 
