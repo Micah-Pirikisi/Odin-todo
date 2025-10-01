@@ -9,6 +9,10 @@ body {
     line-height: 1.6;
 }
 
+:root {
+    --accent: #aaa;
+}
+
 /* overall layout */ 
 #app {
     display: flex;
@@ -28,10 +32,12 @@ body {
 #sidebar h2, 
 #sidebar h3, 
 #main h3 {
-    font-weight: bold;
     margin-bottom: 0.5rem;
-    border-bottom: 1px dashed #aaa;
+    border-bottom: 1px dashed var(--accent);
     padding-bottom: 0.2rem;
+    font-size: 1.4rem;
+    color: #444;
+    letter-spacing: 1px;
 }
 
 #project-form, 
@@ -49,19 +55,22 @@ body {
     font-size: 2rem;
     margin-bottom: 1rem;
     font-weight: bold;
-    text-decoration: underline wavy #aaa;
+    text-decoration: underline var(--accent);
 }
 
-/* todo container */
+/* lists */
+#project-list span:hover {
+    text-decoration: underline;
+}
+
 #todo-list, #project-list {
     list-style: none;
     padding: 0;
-    margin: 1rem 0;
+    margin: 2rem 0;
 }
 
 #todo-list li, #project-list li {
     background: #fff;
-    border: 2px dashed #aaa;
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: 10px;
@@ -76,17 +85,22 @@ body {
 
 /* buttons */ 
 button {
-  font-family: inherit;
-  font-size: 1rem;
-  border: none;
-  background: none;
-  cursor: pointer;
-  margin-left: 0.5rem;
+    font-family: inherit;
+    font-size: 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem 0.5rem;
+    transition: transform 0.2s ease;
 }
 
 button:hover {
     color: #b00;
-    transform: scale(1.1);
+    transform: scale(1.2);
 }
 
 /* form inputs */ 
@@ -101,7 +115,7 @@ input, select {
 }
 
 input:focus, select:focus {
-    border-color: #aaa;
+    border-color: var(--accent);
 }
 
 /* checkboxes */ 
@@ -121,15 +135,50 @@ input[type="checkbox"] {
 }
 
 .todo-high {
-    background: #ffb3b3;
+    background: #fe8484;
 }
 
 .todo-medium {
-    background: #ffe599;
+    background: #fcdd81;
 }
 
 .todo-low {
-    background: #b3ffb3;
+    background: #83ff83;
+}
+
+/* todo modals */ 
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 35px;
+  cursor: pointer;
+  font-size: 40px;
 }
 
 /* mobile layout */ 

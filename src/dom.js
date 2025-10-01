@@ -100,7 +100,7 @@ function renderTodos() {
 
         // priority label 
         const priorityTag = document.createElement('span'); 
-        priorityTag.textContent = todo.priority; 
+        priorityTag.textContent = todo.priority.toLowerCase(); 
         priorityTag.classList.add(`todo-${todo.priority.toLowerCase()}`); 
         priorityTag.style.marginRight = '10px'; 
         li.appendChild(priorityTag); 
@@ -148,6 +148,11 @@ function renderTodos() {
             saveToLocalStorage()
             renderTodos(); 
         })
+
+        // modal 
+        todoText.addEventListener('click', () => {
+            showTodoModal(todo);
+        });
 
         li.appendChild(deleteBtn); 
         todoList.appendChild(li);  
@@ -261,6 +266,29 @@ function showEditForm(li, todo, index) {
 
     saveToLocalStorage();
     renderTodos();
+    });
+}
+
+function showTodoModal(todo) {
+    const modal = document.getElementById('todo-modal');
+    modal.classList.remove('hidden');
+
+    document.getElementById('modal-title').textContent = todo.title;
+    document.getElementById('modal-dueDate').textContent = format(parseISO(todo.dueDate), 'MMM d, yyyy');
+    document.getElementById('modal-priority').textContent = todo.priority;
+    document.getElementById('modal-description').textContent = todo.description || '—';
+    document.getElementById('modal-notes').textContent = todo.notes || '—';
+
+    // close button
+    modal.querySelector('.close-button').addEventListener('click', () => {
+        modal.classList.add('hidden');
+    });
+
+    // Optional: close when clicking outside modal content
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+        }
     });
 }
 
