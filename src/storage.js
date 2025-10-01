@@ -21,7 +21,12 @@ function saveToLocalStorage() {
 
 function loadFromLocalStorage() {
     const saved = localStorage.getItem(STORAGE_KEY); 
-    if (!saved) return; 
+    
+    if (!saved) {
+        // default project if nothing saved yet 
+        const defaultProject = addProject('Default'); 
+        return; 
+    }; 
 
     try {
         const parsed = JSON.parse(saved); 
@@ -33,10 +38,11 @@ function loadFromLocalStorage() {
                     todoData.description, 
                     todoData.dueDate, 
                     todoData.priority, 
+                    todoData.notes || '', 
+                    todoData.checklist || [],
                     todoData.completed || false 
                 )); 
 
-                newTodo.completed = todoData.completed || false; 
                 newProject.addTodo(newTodo);
             }); 
         }); 

@@ -7,6 +7,7 @@ import { getProjects,
 import { saveToLocalStorage
 } from './storage';
 
+import { format, parseISO, isToday, isWithinInterval, addDays } from 'date-fns'; 
 
 // render projects 
 
@@ -73,8 +74,8 @@ function renderTodos() {
         checkbox.checked = todo.completed;
         checkbox.addEventListener('change', () => {
             todo.toggleComplete();
-            saveToLocalStorage();  // make sure to save state
-            renderTodos();         // re-render to update style
+            saveToLocalStorage(); 
+            renderTodos(); 
         });
         li.appendChild(checkbox);
 
@@ -83,12 +84,12 @@ function renderTodos() {
         priorityTag.textContent = todo.priority; 
         priorityTag.classList.add(`todo-${todo.priority.toLowerCase()}`); 
         priorityTag.style.marginRight = '10px'; 
-
         li.appendChild(priorityTag); 
 
         // todo title and due date 
-        const todoText = document.createElement('span'); 
-        todoText.textContent = `${todo.title} (Due: ${todo.dueDate})`
+        const formattedDate = format(parseISO(todo.dueDate), 'MMM d, yyyy') 
+        const todoText = document.createElement('span');
+        todoText.textContent = `${todo.title} (Due: ${formattedDate})`; 
 
         // todo completion 
         if (todo.completed) {
@@ -119,6 +120,65 @@ function renderTodos() {
         li.appendChild(deleteBtn); 
         todoList.appendChild(li);  
     }); 
+}
+
+document.getElementById('smart-views').addEventListener('click', (e) => {
+    if (!e.target.matches('button')) return;
+    const view = e.target.dataset.view;
+    renderSmartView(view);
+});
+
+function renderSmartView(view) {
+    const todoList = document.getElementById('todo-list'); 
+    const title = document.getElementById('project-title');
+    
+    todoList.innerHTML = ''; 
+    
+    const allTodos = getProjects().flatMap(p => p.getTodos()); 
+    
+    let filtered = []; 
+
+    if(view === 'today') {
+        filtered = allTodos.filter(todo => isToday(parseISO(todo.dueDate)));
+        title.textContent = '📅 Today';
+    } else if (view === 'upcoming') {
+        filtered = allTodos.filter(todo =>
+            isWithinInterval(parseISO(todo.dueDate), {
+                start: new Date(),
+                end: addDays(new Date(), 7)
+            })
+        );
+        title.textContent = '🔜 Upcoming';
+    } else if (view === 'important') {
+        filtered = allTodos.filter(todo => todo.priority.toLowerCase() === 'high'); 
+        title.textContent = '❗Important'; 
+    }
+
+    filtered.forEach((todo) => {
+        const li = document.createElement('li');
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = todo.completed;
+        checkbox.disabled = true; // disable checkbox in smart views
+        li.appendChild(checkbox);
+
+        const priorityTag = document.createElement('span');
+        priorityTag.textContent = todo.priority;
+        priorityTag.classList.add(`todo-${todo.priority.toLowerCase()}`);
+        li.appendChild(priorityTag);
+
+        const formattedDate = format(parseISO(todo.dueDate), 'MMM d, yyyy');
+        const todoText = document.createElement('span');
+        todoText.textContent = `${todo.title} (Due: ${formattedDate})`;
+        if (todo.completed) {
+            todoText.style.textDecoration = 'line-through';
+            todoText.style.opacity = '0.6';
+        }
+        li.appendChild(todoText);
+
+        todoList.appendChild(li); 
+    })
 }
 
 function showEditForm(li, todo, index) {

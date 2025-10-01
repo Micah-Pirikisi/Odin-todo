@@ -11,7 +11,12 @@
         <div id="sidebar">
             <h2>Projects</h2>
             <ul id="project-list"></ul>
-            <h3>Add New Project</h3>
+            <ul id="smart-views">
+                <li><button data-view="today">📅 Today</button></li>
+                <li><button data-view="upcoming">🔜 Upcoming</button></li>
+                <li><button data-view="important">❗Important</button></li>
+            </ul>
+            <h3>New Project</h3>
             <form id="project-form">
                 <input type="text" id="project-name" placeholder="Project name" required>
                 <button type="submit">Add Project</button>
@@ -21,7 +26,7 @@
         <div id="main">
             <div id="project-title"></div>
             <ul id="todo-list"></ul>
-            <h3>Add a New Todo</h3>
+            <h3>New Todo</h3>
             <form id="todo-form">
                 <input type="text" id="todo-title" placeholder="Title" required />
                 <input type="text" id="todo-description" placeholder="Description" />
@@ -31,6 +36,7 @@
                     <option value="medium" selected>Medium</option>
                     <option value="high">High</option>
                 </select>
+                <input type="text" id="todo-notes" placeholder="Notes (optional)" />
                 <button type="submit">Add Todo</button>
             </form>
         </div>

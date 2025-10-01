@@ -47,10 +47,11 @@ document.getElementById("todo-form").addEventListener("submit", (e) => {
     const description = document.getElementById("todo-description").value.trim();
     const dueDate = document.getElementById("todo-dueDate").value;
     const priority = document.getElementById("todo-priority").value;
+    const notes = document.getElementById("todo-notes").value.trim();
 
     if (title === "" || dueDate === "") return;
 
-    const newTodo = createTodo(title, description, dueDate, priority);
+    const newTodo = createTodo(title, description, dueDate, priority, notes);
     addTodoToCurrent(newTodo);
 
     // Re-render
