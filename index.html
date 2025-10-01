@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odin | todo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+<script defer src="main.js"></script></head>
+<body>
+    <div id="app">
+        <div id="sidebar">
+            <h2>Projects</h2>
+            <ul id="project-list"></ul>
+            <ul id="smart-views">
+                <li><button data-view="today">📅 Today</button></li>
+                <li><button data-view="upcoming">🔜 Upcoming</button></li>
+                <li><button data-view="important">❗Important</button></li>
+            </ul>
+            <h3>New Project</h3>
+            <form id="project-form">
+                <input type="text" id="project-name" placeholder="Project name" required>
+                <button type="submit">Add Project</button>
+            </form>
+        </div>
+
+        <div id="main">
+            <div id="project-title"></div>
+            <ul id="todo-list"></ul>
+            <h3>New Todo</h3>
+            <form id="todo-form">
+                <input type="text" id="todo-title" placeholder="Title" required />
+                <input type="text" id="todo-description" placeholder="Description" />
+                <input type="date" id="todo-dueDate" required />
+                <select id="todo-priority">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                </select>
+                <input type="text" id="todo-notes" placeholder="Notes (optional)" />
+                <button type="submit">Add Todo</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="todo-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p><strong>Due:</strong> <span id="modal-dueDate"></span></p>
+            <p><strong>Priority:</strong> <span id="modal-priority"></span></p>
+            <p><strong>Description:</strong> <span id="modal-description"></span></p>
+            <p><strong>Notes:</strong> <span id="modal-notes"></span></p>
+        </div>
+    </div>
+</body>
+</html>
